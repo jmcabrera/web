@@ -1,3 +1,7 @@
 /target
 .*
 !.gitignore
+/jboss/standalone/data
+/jboss/standalone/log
+/jboss/standalone/tmp
+/jboss/standalone/configuration/standalone_xml_history

@@ -12,8 +12,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>1.6</maven.compiler.target>
     <maven.compiler.source>1.6</maven.compiler.source>
-    <jboss.base>${basedir}\jboss</jboss.base>
-    <jboss.home>D:\opt\jboss-eap</jboss.home>
+    <jboss.base.dir>${basedir}\jboss</jboss.base.dir>
+    <jboss.home.dir>D:\opt\jboss-eap</jboss.home.dir>
   </properties>
 
   <dependencies>
@@ -39,16 +39,36 @@
       <plugin>
         <groupId>org.jboss.as.plugins</groupId>
         <artifactId>jboss-as-maven-plugin</artifactId>
-        <version>7.6.Final-SNAPSHOT</version>
+        <version>7.6.Final</version>
         <configuration>
-          <jbossBase>${jboss.base}\standalone</jbossBase>
-          <jbossHome>${jboss.home}</jbossHome>
+          <jbossBase>${jboss.base.dir}\standalone</jbossBase>
+          <jbossHome>${jboss.home.dir}</jbossHome>
           <modules-path>
             <paths>
-              <path>${jboss.base}/modules</path>
-              <path>${jboss.home}/modules</path>
+              <path>${jboss.base.dir}/modules</path>
+              <path>${jboss.home.dir}/modules</path>
             </paths>
           </modules-path>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>jboss/standalone/configuration/standalone_xml_history</directory>
+            </fileset>
+            <fileset>
+              <directory>jboss/standalone/data</directory>
+            </fileset>
+            <fileset>
+              <directory>jboss/standalone/tmp</directory>
+            </fileset>
+            <fileset>
+              <directory>jboss/standalone/log</directory>
+            </fileset>
+          </filesets>
         </configuration>
       </plugin>
     </plugins>
