@@ -5,3 +5,5 @@
 /jboss/standalone/log
 /jboss/standalone/tmp
 /jboss/standalone/configuration/standalone_xml_history
+/jboss/standalone/configuration/logging.properties
+/target/

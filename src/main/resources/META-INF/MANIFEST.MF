@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Created-By: 17.0-b16 (Sun Microsystems Inc.)
+Dependencies: org.apache.ws.security

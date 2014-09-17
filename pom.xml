@@ -10,24 +10,75 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.target>1.6</maven.compiler.target>
-    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
     <jboss.base.dir>${basedir}\jboss</jboss.base.dir>
     <jboss.home.dir>D:\opt\jboss-eap</jboss.home.dir>
   </properties>
 
+
+
+  <dependencyManagement>
+    <dependencies>
+
+      <!-- Arquillian -->
+      <dependency>
+        <groupId>org.jboss.arquillian</groupId>
+        <artifactId>arquillian-bom</artifactId>
+        <version>1.1.5.Final</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
+
+    <!-- Spec -->
     <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-api</artifactId>
-      <version>6.0</version>
+      <groupId>org.jboss.spec</groupId>
+      <artifactId>jboss-javaee-6.0</artifactId>
+      <version>1.0.0.Final</version>
+      <type>pom</type>
       <scope>provided</scope>
     </dependency>
+
+    <!-- JUnit -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- Arquillian -->
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-container</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.as</groupId>
+      <artifactId>jboss-as-arquillian-container-managed</artifactId>
+      <version>7.1.1.Final</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.protocol</groupId>
+      <artifactId>arquillian-protocol-servlet</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- <dependency> -->
+    <!-- <groupId>org.jboss.ws</groupId> -->
+    <!-- <artifactId>jbossws-api</artifactId> -->
+    <!-- <version>1.0.2.Final</version> -->
+    <!-- </dependency> -->
   </dependencies>
 
   <build>
     <finalName>web</finalName>
     <plugins>
+      <!-- WAR plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
@@ -36,12 +87,14 @@
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
+
+      <!-- JBoss AS Maven Plugin -->
       <plugin>
         <groupId>org.jboss.as.plugins</groupId>
         <artifactId>jboss-as-maven-plugin</artifactId>
         <version>7.6.Final</version>
         <configuration>
-          <jbossBase>${jboss.base.dir}\standalone</jbossBase>
+          <jvmArgs>-Djboss.server.base.dir=${jboss.base.dir}\standalone</jvmArgs>
           <jbossHome>${jboss.home.dir}</jbossHome>
           <modules-path>
             <paths>
@@ -51,6 +104,8 @@
           </modules-path>
         </configuration>
       </plugin>
+
+      <!-- Clean JBoss AS maven plugin generated files -->
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
         <version>2.5</version>
@@ -70,6 +125,12 @@
             </fileset>
           </filesets>
         </configuration>
+      </plugin>
+
+      <!-- Arquillian -->
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.17</version>
       </plugin>
     </plugins>
   </build>

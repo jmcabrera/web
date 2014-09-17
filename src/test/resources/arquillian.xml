@@ -1,0 +1,16 @@
+<arquillian
+  xmlns="http://jboss.org/schema/arquillian"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+        http://jboss.org/schema/arquillian
+        http://www.jboss.org/schema/arquillian/arquillian_1_0.xsd">
+  <defaultProtocol type="Servlet 3.0" />
+  <container
+    qualifier="jboss-eap-remote"
+    default="true">
+    <configuration>
+      <property name="jbossHome">D:/opt/jboss-eap</property>
+      <property name="javaVmArguments">-Djboss.server.base.dir=D:/Workspaces/luna/web/jboss/standalone</property>
+    </configuration>
+  </container>
+</arquillian>

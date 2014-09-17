@@ -18,6 +18,7 @@ public class TestServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		PrintWriter pw = resp.getWriter();
+
 		pw.println("<html>" + //
 				"<head>" + //
 				"<style>" + //
@@ -29,6 +30,7 @@ public class TestServlet extends HttpServlet {
 				"</style>" + //
 				"</head>" + //
 				"<body>");
+
 		pw.print("" //
 				+ "<h1>TEST SERVLET</H1>" //
 				+ "jsessionid=" + req.getSession().getId() + "<br />" //
@@ -48,5 +50,4 @@ public class TestServlet extends HttpServlet {
 		pw.println("</table></body></html>");
 
 	}
-
 }
