@@ -9,6 +9,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
+import org.jboss.shrinkwrap.api.formatter.Formatters;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,13 +20,16 @@ public class MyEjbTest {
 
 	@Deployment(testable = true)
 	public static WebArchive createDeployment() {
-		return ShrinkWrap.create(WebArchive.class) //
+		WebArchive wa = ShrinkWrap.create(WebArchive.class) //
 				.addAsWebInfResource(new StringAsset("<ejb-jar />"), "ejb-jar.xml") //
 				.addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml") //
-				.addAsWebInfResource("persistence.xml", "META-INF/persistence.xml") //
-				.addClass(MyJPAEntity.class) //
 				.addClass(MyEjb.class) //
 		;
+		System.out.println("~~~ v Web Archive Content v ~~~");
+		wa.writeTo(System.out, Formatters.VERBOSE);
+		System.out.println();
+		System.out.println("~~~ ^ Web Archive Content ^ ~~~");
+		return wa;
 	}
 
 	@Inject
