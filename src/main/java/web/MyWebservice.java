@@ -4,7 +4,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 @WebService
-public interface TestWebservice {
+public interface MyWebservice {
 
 	@WebMethod
 	public String echo(String msg);
