@@ -26,7 +26,7 @@ public class MyCdiTest {
 	private MyCdiBean	bean;
 
 	@Test
-	public void testCdi() throws InterruptedException {
+	public void testCdi() {
 		String hello = "Hello!";
 		Assert.assertEquals("cdi-" + hello, bean.echo(hello));
 	}

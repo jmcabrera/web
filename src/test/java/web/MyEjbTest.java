@@ -1,7 +1,5 @@
 package web;
 
-import java.net.MalformedURLException;
-
 import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -36,8 +34,13 @@ public class MyEjbTest {
 	private MyEjb	ejb;
 
 	@Test
-	public void testEjb() throws MalformedURLException {
+	public void testEjb() {
 		String hello = "Hello!";
 		Assert.assertEquals("ejb-" + hello, ejb.echo(hello));
+	}
+
+	@Test
+	public void testEjbBVal() {
+		Assert.assertEquals("ejb-null", ejb.echo(null));
 	}
 }
