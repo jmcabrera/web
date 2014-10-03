@@ -83,27 +83,6 @@
         </configuration>
       </plugin>
 
-      <!-- JBoss Mods -->
-      <plugin>
-        <groupId>net.atos.xa</groupId>
-        <artifactId>jbossmods-maven-plugin</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-        <executions>
-          <execution>
-            <id>mods-get</id>
-            <goals>
-              <goal>populate</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>mods-clean</id>
-            <goals>
-              <goal>clean</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
       <!-- JBoss AS Maven Plugin -->
       <plugin>
         <groupId>org.jboss.as.plugins</groupId>
