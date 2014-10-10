@@ -1,7 +1,5 @@
-/target
 .*
 !.gitignore
-/jboss/standalone/deployments
 /jboss/standalone/data
 /jboss/standalone/log
 /jboss/standalone/tmp
