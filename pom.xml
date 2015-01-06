@@ -59,16 +59,6 @@
   </dependencyManagement>
 
   <dependencies>
-    <dependency>
-      <groupId>net.atos.xa.rm</groupId>
-      <artifactId>xa-rm-jpa</artifactId>
-      <version>3.3.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.shiro</groupId>
-      <artifactId>shiro-web</artifactId>
-      <version>1.2.2</version>
-    </dependency>
 
     <!-- Spec -->
     <dependency>
