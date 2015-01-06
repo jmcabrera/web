@@ -1,7 +1,4 @@
-<project
-  xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.worldline.test</groupId>
   <artifactId>web</artifactId>
@@ -9,18 +6,47 @@
   <packaging>war</packaging>
 
   <properties>
+    <!-- General -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.source>1.7</maven.compiler.source>
+
+    <!-- JBoss -->
     <jboss.base.dir>${basedir}\jboss</jboss.base.dir>
-    <jboss.home.dir>D:\opt\jboss-eap</jboss.home.dir>
+    <jboss.home.dir>${env.JBOSS_HOME}</jboss.home.dir>
+    <jboss.arquillian>7.2.0.Final</jboss.arquillian>
+
+    <!-- TomEE -->
+    <tomee.version>1.5.2</tomee.version>
+    <tomee.arquillian>${tomee.version}</tomee.arquillian>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>worldline</id>
+      <url>http://repository.atosworldline.com/nexus/content/repositories/xa/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>worldline.snap</id>
+      <url>http://repository.atosworldline.com/nexus/content/repositories/xa-snapshots/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
 
   <dependencyManagement>
     <dependencies>
-
       <!-- Arquillian -->
       <dependency>
         <groupId>org.jboss.arquillian</groupId>
@@ -33,6 +59,16 @@
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+      <groupId>net.atos.xa.rm</groupId>
+      <artifactId>xa-rm-jpa</artifactId>
+      <version>3.3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-web</artifactId>
+      <version>1.2.2</version>
+    </dependency>
 
     <!-- Spec -->
     <dependency>
@@ -57,18 +93,70 @@
       <artifactId>arquillian-junit-container</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.jboss.as</groupId>
-      <artifactId>jboss-as-arquillian-container-remote</artifactId>
-      <version>7.1.1.Final</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.protocol</groupId>
-      <artifactId>arquillian-protocol-servlet</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <skipTests>true</skipTests>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>jboss-remote</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.jboss.as</groupId>
+          <artifactId>jboss-as-arquillian-container-remote</artifactId>
+          <version>${jboss.arquillian}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.arquillian.protocol</groupId>
+          <artifactId>arquillian-protocol-servlet</artifactId>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>jboss-managed</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.jboss.as</groupId>
+          <artifactId>jboss-as-arquillian-container-managed</artifactId>
+          <version>${jboss.arquillian}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.arquillian.protocol</groupId>
+          <artifactId>arquillian-protocol-servlet</artifactId>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+    <profile>
+      <id>tomee-embedded</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.apache.openejb</groupId>
+          <artifactId>arquillian-tomee-embedded</artifactId>
+          <version>${tomee.arquillian}</version>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 
   <build>
     <finalName>web</finalName>
@@ -100,6 +188,13 @@
         </configuration>
       </plugin>
 
+      <!-- TomEE Maven Plugin -->
+      <plugin>
+        <groupId>org.apache.openejb.maven</groupId>
+        <artifactId>tomee-maven-plugin</artifactId>
+        <version>${tomee.version}</version>
+      </plugin>
+
       <!-- Clean JBoss AS maven plugin generated files -->
       <plugin>
         <artifactId>maven-clean-plugin</artifactId>
@@ -121,12 +216,16 @@
           </filesets>
         </configuration>
       </plugin>
-
-      <!-- Arquillian -->
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.17</version>
-      </plugin>
     </plugins>
+
+    <!-- Arquillian -->
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.17</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 </project>

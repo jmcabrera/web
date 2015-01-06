@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor
+  license agreements. See the NOTICE file distributed with this work for additional
+  information regarding copyright ownership. The ASF licenses this file to
+  you under the Apache License, Version 2.0 (the "License"); you may not use
+  this file except in compliance with the License. You may obtain a copy of
+  the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required
+  by applicable law or agreed to in writing, software distributed under the
+  License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS
+  OF ANY KIND, either express or implied. See the License for the specific
+  language governing permissions and limitations under the License. -->
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence              http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="xarm">
+    <!-- == HIBERNATE PROVIDER == This is the default when running tests.
+      This value is overriden when in the 'install' phase of maven by OpenJPA.
+      This is why we specify OpenJPA properties too, later in this document. -->
+  <!-- <provider>org.hibernate.ejb.HibernatePersistence</provider> -->
+    <jta-data-source>db</jta-data-source>
+    <class>net.atos.xa.rm.infra.jpa2.authn.cred.hashed.B64HashedPasswordCredentialEntity</class>
+    <class>net.atos.xa.rm.infra.jpa2.authn.PrincipalEntity</class>
+    <class>net.atos.xa.rm.infra.jpa2.authn.CredentialEntity</class>
+    <class>net.atos.xa.rm.infra.jpa2.authn.UserEntity</class>
+    <class>net.atos.xa.rm.infra.jpa2.authn.LoginPrincipalEntity</class>
+    <class>net.atos.xa.rm.infra.jpa2.authn.cred.PasswordCredentialEntity</class>
+    <class>net.atos.xa.rm.infra.jpa2.authz.RoleEntity</class>
+    <class>net.atos.xa.rm.infra.jpa2.pipe.PipeEntity</class>
+    <class>net.atos.xa.rm.infra.jpa2.authn.UserConfigurationEntity</class>
+    <class>net.atos.xa.rm.infra.jpa2.pipe.PipedConfigurationEntity</class>
+    <class>net.atos.xa.rm.infra.jpa2.authz.RoleConfigurationEntity</class>
+    <class>net.atos.xa.rm.infra.jpa2.pipe.ConfigurationBagEntity</class>
+    <class>net.atos.xa.rm.infra.jpa2.pipe.PipeId</class>
+    <class>net.atos.xa.rm.infra.jpa2.pipe.ConfigurationEntity</class>
+    <class>net.atos.xa.rm.infra.jpa2.authz.PermissionEntity</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <!-- Second level cache is not necessary if you use Shiro's cache which is more efficient -->
+    <shared-cache-mode>NONE</shared-cache-mode>
+    <properties>
+      <!-- HIBERNATE CONFIGURATION -->
+      <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+      <property name="hibernate.show_sql" value="false" />
+      <property name="hibernate.format_sql" value="false" />
+      <!-- OPENJPA CONFIGURATION -->
+      <property name="openjpa.Log" value="DefaultLevel=INFO,SQL=INFO" />
+      <property name="openjpa.jdbc.SchemaFactory" value="native(ForeignKeys=true)" />
+
+      <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        | SHOULD NOT BE USED in production, use SQL cripts instead
+        ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+      <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(ForeignKeys=true, SchemaAction='dropDB,add')" />
+
+      <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        | SHOULD BE USED in production,
+        | but stales tests when we create/drop databases in the same VM more than once.
+        ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        <property name="openjpa.jdbc.MappingDefaults" value="ForeignKeyDeleteAction=restrict,JoinForeignKeyDeleteAction=restrict" /> -->
+    </properties>
+  </persistence-unit>
+</persistence>
